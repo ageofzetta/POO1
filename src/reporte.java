@@ -1,10 +1,10 @@
 public class reporte {
 
     private static float costoPorImpresion = 0.1F;
-    private static float valorConversion = 112.5F;
+    private static float valorConversion = 12.5F;
 
     private static int clicks = 256;
-    private static int impresiones = 3259;
+    private static int impresiones = 1159;
     private static int conversiones = 19;
 
     private static float costoMensual = costoPorImpresion * (float)impresiones;
