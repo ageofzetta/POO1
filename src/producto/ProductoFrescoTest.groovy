@@ -24,7 +24,7 @@ class ProductoFrescoTest extends GroovyTestCase {
             productoFresco.setFechaEnvasado("AB");
         }
 
-        productoFresco.setFechaEnvasado("2017-11-28");
+        productoFresco.setFechaEnvasado("2017-10-28");
         assertThat(productoFresco.getFechaEnvasado(), is("2017-10-28"));
     }
 
