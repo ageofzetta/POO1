@@ -1,5 +1,9 @@
 package producto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Subclase o clase hijo
  */
@@ -8,7 +12,7 @@ public class ProductoFresco extends producto {
 	/**
 	 * Fecha de envasado del producto
 	 */
-	private String fechaEnvasado;
+	private Date fechaEnvasado;
 
 	/**
 	 * País de orígen del producto
@@ -20,17 +24,26 @@ public class ProductoFresco extends producto {
 	 * @return fechaEnvasado
 	 */
 	public String getFechaEnvasado() {
-		return fechaEnvasado;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(this.fechaEnvasado);
 	}
 
 	/**
 	 * Setter de la propiedad fechaEnvasado
 	 * @param fechaEnvasado
 	 */
-	public void setFechaEnvasado(String fechaEnvasado) {
-		this.fechaEnvasado = fechaEnvasado;
+	public void setFechaEnvasado(String fechaEnvasado) throws ProductException, ParseException {
+		try {
+			Date fechaEnvasadoFECHA = convertStringToDate(fechaEnvasado);
+			if(fechaEnvasadoFECHA.after(this.fechaActual())) {
+				throw new ProductException("La fecha de envasado es inválida\n");
+			} else {
+				this.fechaEnvasado = fechaEnvasadoFECHA;
+			}
+		} catch (ParseException e) {
+			throw new ProductException("La fecha de envasado es inválida\n");
+		}
 	}
-
 	/**
 	 * Getter de la propiedad paisOrigen
 	 * @return paisOrigen
@@ -68,7 +81,7 @@ public class ProductoFresco extends producto {
 	 */
 	@Override
 	public void informacionDeProducto() {
-		log("Fecha envasado " + this.fechaEnvasado );
+		log("Fecha envasado " + this.getFechaEnvasado() );
 		log("País de orígen " + this.paisOrigen);
 	}
 

@@ -1,9 +1,21 @@
 package producto;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Superclase o clase padre producto
  */
 public abstract class producto {
+
+    /**
+     * fechaActual
+     */
+    protected Date fechaActual() {
+         return new Date();
+    }
 
     /**
      * inicioContador: es una constante, define un núkero apartir del cuál empezamos a contar para el número de lote
@@ -22,7 +34,7 @@ public abstract class producto {
     /**
      * Fecha de caducidad
      */
-    protected String fechaCaducidad;
+    protected Date fechaCaducidad;
 
     /**
      * Nombre del producto
@@ -40,6 +52,13 @@ public abstract class producto {
      */
     public static void log(String str) {
         System.out.println(str);
+    }
+
+
+    public Date convertStringToDate(String dateString) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse ( dateString );
+        return date;
     }
 
     /**
@@ -88,9 +107,12 @@ public abstract class producto {
      * en éste caso acepta un string
      * @param precio
      */
-    public void setPrecio(String precio) {
-
-        this.precio = Double.parseDouble(precio);
+    public void setPrecio(String precio) throws NumberFormatException, ProductException{
+        try {
+            this.precio = Double.parseDouble(precio);
+        } catch (Exception e) {
+            throw new ProductException("El precio es inválido");
+        }
     }
 
     /**
@@ -98,15 +120,25 @@ public abstract class producto {
      * @return fechaCaducidad
      */
     public String getFechaCaducidad() {
-        return this.fechaCaducidad;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(this.fechaCaducidad);
     }
 
     /**
      * Setter de la propiedad fechaCaducidad
      * @param fechaCaducidad
      */
-    public void setFechaCaducidad(String fechaCaducidad) {
-        this.fechaCaducidad = fechaCaducidad;
+    public void setFechaCaducidad(String fechaCaducidad) throws ProductException, ParseException {
+        try {
+            Date fechaCaducidadFECHA = convertStringToDate(fechaCaducidad);
+            if(fechaCaducidadFECHA.before(this.fechaActual())) {
+                throw new ProductException("La fecha de caducidad para éste producto ya pasó");
+            } else {
+                this.fechaCaducidad = fechaCaducidadFECHA;
+            }
+        } catch (ParseException e) {
+            throw new ProductException("La fecha de caducidad es inválida");
+        }
     }
 
     /**

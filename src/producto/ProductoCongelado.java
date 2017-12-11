@@ -1,4 +1,5 @@
 package producto;
+import producto.ProductException;
 
 /**
  * Subclase o clase hijo
@@ -22,7 +23,10 @@ public class ProductoCongelado extends producto {
 	 * Setter de la propiedad tempCongelacionRecomendada
 	 * @param tempCongelacionRecomendada
 	 */
-	public void setTempCongelacionRecomendada(int tempCongelacionRecomendada) {
+	public void setTempCongelacionRecomendada(int tempCongelacionRecomendada) throws ProductException {
+		if (tempCongelacionRecomendada > 0) {
+			throw new ProductException("La temperatura de congelación debe ser menor a 0\n");
+		}
 		this.tempCongelacionRecomendada = tempCongelacionRecomendada;
 	}
 
